@@ -11,7 +11,7 @@ Probana is a research probabilistic analog p-bit computer. It can be used as bac
 
 ## How it works or Why it should work?
 
-The trick is to perform a calibration in the beginning. We measure the analog representation of each p-bit and we apply a software adjustment. Each p-bit implements a Bernoulli distribution. This distribution has a parameter, `p`, which defines the probability of the p-bit being `1`.
+The trick is to perform a calibration in the beginning. It is a software controlled correction applied in hardware. We measure the analog representation of each p-bit and we apply a software adjustment. Each p-bit implements a Bernoulli distribution. This distribution has a parameter, `p`, which defines the probability of the p-bit being `1`.
 
 We want to preserve the unique analog randomness of each p-bit, but we also want this p-bit to follow a Bernoulli distribution with the parameter we set for it. This is achieved by measuring the relation:
 
