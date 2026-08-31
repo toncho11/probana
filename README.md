@@ -19,13 +19,15 @@ $$
 VBIAS \rightarrow P(1)
 $$
 
-for every physical p-bit during calibration. A MCU (microcontroller such as Arduino) stores this calibration curve and later uses it in the opposite direction:
+for every physical p-bit during calibration. We call VBIAS the analog control voltage applied to a p-bit. A MCU (microcontroller such as Arduino) stores this calibration curve and later uses it in the opposite direction:
 
 $$
 \text{requested } P(1) \rightarrow VBIAS
 $$
 
-For example, if the software requests `P(1) = 0.7`, the MCU finds the `VBIAS` value that makes that particular physical p-bit produce approximately 70% ones. In this way, the physical noise remains natural and different for every p-bit, while software calibration makes all p-bits follow the probability requested by the p-kit circuit.
+### Example 
+
+If the software requests `P(1) = 0.7`, the MCU uses the calibration curve of that particular p-bit to adjust its `VBIAS` so that its measured output probability is approximately 0.7. In this way, it follows the required Bernoulli distribution and produces approximately 70% ones. Moreover, the physical noise remains natural and different for every p-bit, while software calibration compensates for device differences and makes each p-bit follow the probability requested by the p-kit circuit.
 
 ## Architecture
 
