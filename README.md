@@ -53,7 +53,7 @@ The p-kit circuit (J, h) is uploaded once, then the update loop runs locally on 
 |  +------+      +------------------+      +-----------------------------------+      +-------------+          |
 |  | USB  | ---> | MCU              | ---> | DAC applies correction physically | ---> | 8-ch DAC    |          |
 |  +------+      | RP2040 / ESP32   |      | as an analog voltage per physical |      |             |          |
-|                |                  |      | p-bit and sets the Bernoulli p    |      |             |          |
+|                |                  |      | p-bit, setting the Bernoulli p    |      |             |          |
 |                |                  |      | requested by the MCU              |      +------+------+          |
 |                | computes p from  |      +-----------------------------------+      | | | | | | | |          |
 |                | J, h and states  |                                                 v v v v v v v v          |
@@ -67,7 +67,19 @@ The p-kit circuit (J, h) is uploaded once, then the update loop runs locally on 
 |                                                                                                              |
 +--------------------------------------------------------------------------------------------------------------+
 ```
-The DAC should have at least 12-bit resolution, and optionally it could use a 2.5 V precision reference. An isolated power supply could also be helpful, but it is not critical for the first prototype. Next is the p-bits diagram.
+The DAC should have at least 12-bit resolution, and optionally it could use a 2.5 V precision reference. An isolated power supply could also be helpful, but it is not critical for the first prototype. Setting the p value for the Bernoulli distribution is achieved by applying the calibrated VBIAS correction:
+```
+p target
+   ↓
+MCU calibration mapping
+   ↓
+corrected VBIAS value
+   ↓
+DAC digital code
+   ↓
+analog VBIAS voltage
+```
+Next is the p-bits diagram.
 ```
 +--------------------------------------------------------------------------------------------------+
 |                                        PHYSICAL P-BIT SECTION                                    |
