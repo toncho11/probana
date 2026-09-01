@@ -79,7 +79,7 @@ DAC digital code
    ↓
 analog VBIAS voltage
 ```
-Next is the p-bits diagram.
+The correction is applied using a per-p-bit look-up table that converts the desired p value into the corrected VBIAS voltage output by the DAC. Next is the p-bits diagram.
 ```
 +--------------------------------------------------------------------------------------------------+
 |                                        PHYSICAL P-BIT SECTION                                    |
