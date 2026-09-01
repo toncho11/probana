@@ -100,6 +100,7 @@ void updatePbit(uint8_t i,float scale) {
 }
 
 void runCircuit(uint32_t samples,uint32_t burn,uint16_t thin) {
+  Serial.println("runCircuit started");
   uint32_t step=0;
 
   for(uint32_t n=0;n<burn;n++,step++)
