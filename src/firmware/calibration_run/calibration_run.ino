@@ -7,6 +7,8 @@ PING
 CLEAR <n>
 H <i> <value>
 J <from> <to> <value>
+ANNEAL CONSTANT <scale>
+ANNEAL LINEAR <start> <end> <steps>
 COMMIT
 RUN <samples> <burn_in> <thin>
 
@@ -14,6 +16,8 @@ J and h are uploaded once. During RUN, coupling updates, calibration
 correction and physical p-bit sampling are performed locally.
 
 Use probana_backend in p-kit.
+Annealing can be optimized. In this first version annealing advances per
+individual p-bit update, not per full sweep.
 */
 
 #include <Arduino.h>
@@ -28,6 +32,17 @@ float calibP[N][STEPS+1], J[N][N], h[N];
 int8_t m[N];
 uint8_t activeN=N;
 bool committed=false;
+
+enum AnnealMode { ANNEAL_CONSTANT, ANNEAL_LINEAR };
+AnnealMode annealMode=ANNEAL_CONSTANT;
+float annealStart=1.0f, annealEnd=1.0f;
+uint32_t annealSteps=1;
+
+float annealScale(uint32_t step) {
+  if(annealMode==ANNEAL_CONSTANT || annealSteps<=1) return annealStart;
+  float x=min(1.0f,(float)step/(annealSteps-1));
+  return annealStart+x*(annealEnd-annealStart);
+}
 
 void setDACVoltage(uint8_t ch,float v) {
   // TODO: selected 12/16-bit DAC
@@ -73,9 +88,10 @@ void initState() {
   for(uint8_t i=0;i<activeN;i++) m[i]=digitalRead(qPin[i]) ? 1:-1;
 }
 
-void updatePbit(uint8_t i) {
+void updatePbit(uint8_t i,float scale) {
   float I=h[i];
   for(uint8_t j=0;j<activeN;j++) I+=m[j]*J[j][i];
+  I*=scale;
 
   float p=1.0f/(1.0f+expf(-2.0f*I));
   setDACVoltage(i,voltageForP(i,p));
@@ -84,11 +100,15 @@ void updatePbit(uint8_t i) {
 }
 
 void runCircuit(uint32_t samples,uint32_t burn,uint16_t thin) {
-  for(uint32_t n=0;n<burn;n++) updatePbit(random(activeN));
+  uint32_t step=0;
+
+  for(uint32_t n=0;n<burn;n++,step++)
+    updatePbit(random(activeN),annealScale(step));
 
   Serial.println("OK");
   for(uint32_t s=0;s<samples;s++) {
-    for(uint16_t k=0;k<thin;k++) updatePbit(random(activeN));
+    for(uint16_t k=0;k<thin;k++,step++)
+      updatePbit(random(activeN),annealScale(step));
 
     Serial.print("S ");
     for(uint8_t i=0;i<activeN;i++) Serial.print(m[i]>0 ? '1':'0');
@@ -126,6 +146,31 @@ void handleCommand(char *line) {
     }
     J[from][to]=atof(c); committed=false; Serial.println("OK");
   }
+  else if(!strcmp(cmd,"ANNEAL")) {
+    char *type=strtok(NULL," ");
+
+    if(type && !strcmp(type,"CONSTANT")) {
+      char *a=strtok(NULL," ");
+      if(!a) { Serial.println("ERR ANNEAL"); return; }
+      annealMode=ANNEAL_CONSTANT;
+      annealStart=annealEnd=atof(a);
+      annealSteps=1;
+      Serial.println("OK");
+    }
+    else if(type && !strcmp(type,"LINEAR")) {
+      char *a=strtok(NULL," "), *b=strtok(NULL," "), *c=strtok(NULL," ");
+      if(!a || !b || !c) { Serial.println("ERR ANNEAL"); return; }
+
+      annealMode=ANNEAL_LINEAR;
+      annealStart=atof(a);
+      annealEnd=atof(b);
+      annealSteps=strtoul(c,NULL,10);
+      if(!annealSteps) annealSteps=1;
+
+      Serial.println("OK");
+    }
+    else Serial.println("ERR ANNEAL");
+  } 
   else if(!strcmp(cmd,"COMMIT")) {
     initState(); committed=true; Serial.println("OK");
   }
