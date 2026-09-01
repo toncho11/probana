@@ -100,13 +100,13 @@ void updatePbit(uint8_t i,float scale) {
 }
 
 void runCircuit(uint32_t samples,uint32_t burn,uint16_t thin) {
-  Serial.println("runCircuit started");
+  Serial.println("runCircuit started"); // debug
+  Serial.println("OK"); //required by protocol
   uint32_t step=0;
 
   for(uint32_t n=0;n<burn;n++,step++)
     updatePbit(random(activeN),annealScale(step));
-
-  Serial.println("OK");
+  
   for(uint32_t s=0;s<samples;s++) {
     for(uint16_t k=0;k<thin;k++,step++)
       updatePbit(random(activeN),annealScale(step));
