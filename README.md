@@ -66,3 +66,44 @@ The p-kit circuit (J, h) is uploaded once, then the update loop runs locally on 
 |                                                                                                              |
 +--------------------------------------------------------------------------------------------------------------+
 ```
+The DAC should have at least 12-bit resolution, and optionally it could use a 2.5 V precision reference. An isolated power supply could also be helpful, but it is not critical for the first prototype. Next is the p-bits diagram.
+```
++--------------------------------------------------------------------------------------------------+
+|                                        PHYSICAL P-BIT SECTION                                    |
+|                                                                                                  |
+|  VBIAS0 ---> +--------------------+                     VBIAS7 ---> +---------------------+      |
+|              |     [P-BIT 0]      |                                 |     [P-BIT 7]       |      |
+|              |                    |                                 |                     |      |
+|              |    Noise source    |                                 |    Noise source     |      |
+|              |          ↓         |                                 |         ↓           |      |
+|              |      Amplifier     |           . . .                 |     Amplifier       |      |
+|              |          ↓         |                                 |         ↓           |      |
+|              | Comparator(VBIAS0) |                                 | Comparator(VBIAS7)  |      |
+|              |          ↓         |                                 |         ↓           |      |
+|              |         Q0         |                                 |         Q7          |      |
+|              +--------------------+                                 +---------------------+      |
+|                     |                                                         |                  |
+|                     +------------------- Q0 ... Q7 ---------------------------+------> MCU inputs|
+|                                                                                                  |
+|                       ... additional physical p-bits follow the same structure ...               |
++--------------------------------------------------------------------------------------------------+
+```
+The actual p-bit can be implemented with simple components such as capacitors, resistors, a physical noise source, an amplifier, and a comparator.
+We have:
+* Noise source: creates the random analog fluctuations.
+* VBIAS: the control voltage that shifts the comparator threshold and therefore changes the probability that the p-bit outputs 1 or 0.
+
+
+Q0 ... Q7 are simply the current 0/1 outputs of the eight physical p-bits. Together, these eight bits form one complete state of the probabilistic circuit—for example, `10100110`.
+Because the p-bits keep changing, the MCU reads many such states over time. Some states appear more often than others.
+```text
+Q0 ... Q7
+   ↓
+one 8-bit state
+   ↓
+many states collected over time
+   ↓
+joint distribution of the p-bit circuit
+```
+The MCU sends the sampled joint states one by one back to p-kit. It is then p-kit that constructs or estimates the final joint distribution of the circuit from these samples.
+
