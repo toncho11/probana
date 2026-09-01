@@ -121,4 +121,7 @@ joint distribution of the circuit
 
 `J` and `h` are provided by the `PCircuit` we want to explore. The MCU sends the sampled joint states one by one back to p-kit. It is then p-kit that constructs or estimates the final joint distribution of the circuit from these samples. As this is mixed digital/analog processing, the MCU speed becomes important.
 
+## Future
 
+* Controlled p-bit correlation through J
+* Implementing J physically/analogically
