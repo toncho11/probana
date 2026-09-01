@@ -53,7 +53,8 @@ The p-kit circuit (J, h) is uploaded once, then the update loop runs locally on 
 |  +------+      +------------------+      +-----------------------------------+      +-------------+          |
 |  | USB  | ---> | MCU              | ---> | DAC applies correction physically | ---> | 8-ch DAC    |          |
 |  +------+      | RP2040 / ESP32   |      | as an analog voltage per physical |      |             |          |
-|                |                  |      | p-bit, as instructed by the MCU   |      +------+------+          |
+|                |                  |      | p-bit and sets the Bernoulli p    |      |             |          |
+|                |                  |      | requested by the MCU              |      +------+------+          |
 |                | computes p from  |      +-----------------------------------+      | | | | | | | |          |
 |                | J, h and states  |                                                 v v v v v v v v          |
 |                +--------^---------+                                                VBIAS0 ... VBIAS7         |
