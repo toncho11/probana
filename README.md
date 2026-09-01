@@ -42,3 +42,27 @@ We use an MCU and a 12-bit DAC to control the probability of each physical p-bit
 * communicates with the PC over USB
 
 The p-kit circuit (J, h) is uploaded once, then the update loop runs locally on the board. Otherwise, there would be too much communication overhead if every p-bit update had to be sent over USB individually.
+
+```
++--------------------------------------------------------------------------------------------------------------+
+|                                           MAIN PROBANA ARCHTECTURE (p-bits are not detailed)                 |
+|                                                                                                              |
+|  PC / p-kit                                                                                                  |
+|     |                                                                                                        |
+|     v                                                                                                        |
+|  +------+      +------------------+      +-----------------------------------+      +-------------+          |
+|  | USB  | ---> | MCU              | ---> | DAC applies correction physically | ---> | 8-ch DAC    |          |
+|  +------+      | RP2040 / ESP32   |      | as an analog voltage per physical |      |             |          |
+|                |                  |      | p-bit, as instructed by the MCU   |      +------+------+          |
+|                | computes p from  |      +-----------------------------------+      | | | | | | | |          |
+|                | J, h and states  |                                                 v v v v v v v v          |
+|                +--------^---------+                                                VBIAS0 ... VBIAS7         |
+|                         |                                                               |                    |
+|                         |                                                               | to physical p-bits |
+|                         |                                                               v                    |
+|                         |                                             +----------------------------------+   |
+|                         +---------------- Q0 ... Q7 ------------------| PHYSICAL P-BIT SECTION           |   |
+|                                                                       +----------------------------------+   |
+|                                                                                                              |
++--------------------------------------------------------------------------------------------------------------+
+```
