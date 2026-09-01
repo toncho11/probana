@@ -1,9 +1,10 @@
-Probana is a research probabilistic analog p-bit computer. It can be used as backend for [p-kit](https://github.com/IBM/p-kit).
+Probana is a research analog/digital mixed-signal probabilistic p-bit computer. It can be used as backend for [p-kit](https://github.com/IBM/p-kit). Probana is designed as a specialized hardware platform for probabilistic computing, including Ising models, QUBO problems, combinatorial optimization, and other [p-kit](https://github.com/IBM/p-kit) probabilistic circuits. It also supports on-board optimization methods such as annealing, with the optimization schedule executed locally on the hardware.
+
 
 ## Objectives:
 
 * develop a probabilistic computer, initially with 8 or 16 physical p-bits
-* run p-kit probabilistic circuits
+* run [p-kit](https://github.com/IBM/p-kit) probabilistic circuits
 * provide a full implementation using inexpensive, off-the-shelf components
 * USB pluggable to any computer
 * provide firmware and PCB designs
