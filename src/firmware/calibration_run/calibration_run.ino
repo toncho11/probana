@@ -16,6 +16,11 @@ J and h are uploaded once. During RUN, coupling updates, calibration
 correction and physical p-bit sampling are performed locally.
 
 Use probana_backend in p-kit.
+
+Annealing support is currently limited to the CONSTANT and LINEAR modes
+implemented locally on Probana. Custom p-kit annealing_func schedules are
+not yet supported.
+
 Annealing can be optimized. In this first version annealing advances per
 individual p-bit update, not per full sweep.
 */
