@@ -93,17 +93,32 @@ We have:
 * Noise source: creates the random analog fluctuations.
 * VBIAS: the control voltage that shifts the comparator threshold and therefore changes the probability that the p-bit outputs 1 or 0.
 
-
 Q0 ... Q7 are simply the current 0/1 outputs of the eight physical p-bits. Together, these eight bits form one complete state of the probabilistic circuit—for example, `10100110`.
 Because the p-bits keep changing, the MCU reads many such states over time. Some states appear more often than others.
+
+Here is the main recursive loop:
+
 ```text
+J, h + current Q0 ... Q7
+          ↓
+MCU computes target p
+for each selected p-bit
+          ↓
+calibration correction
+p → corrected VBIAS
+          ↓
+physical p-bit produces
+new Q = 0 or 1
+          ↓
 Q0 ... Q7
-   ↓
-one 8-bit state
-   ↓
+          ↓
+one 8-bit joint state
+          ↓
 many states collected over time
-   ↓
-joint distribution of the p-bit circuit
+          ↓
+joint distribution of the circuit
 ```
-The MCU sends the sampled joint states one by one back to p-kit. It is then p-kit that constructs or estimates the final joint distribution of the circuit from these samples.
+
+`J` and `h` are provided by the `PCircuit` we want to explore. The MCU sends the sampled joint states one by one back to p-kit. It is then p-kit that constructs or estimates the final joint distribution of the circuit from these samples. As this is mixed digital/analog processing, the MCU speed becomes important.
+
 
