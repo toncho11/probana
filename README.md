@@ -134,6 +134,12 @@ joint distribution of the circuit
 
 `J` and `h` are provided by the `PCircuit` we want to explore. The MCU sends the sampled joint states one by one back to p-kit. It is then p-kit that constructs or estimates the final joint distribution of the circuit from these samples. As this is mixed digital/analog processing, the MCU speed becomes important.
 
+## Status
+
+There are two main versions of the firmware:
+* calibration_run.ino: executes circuits of up to eight p-bits using the eight physical p-bits and supports constant and linear annealing through probana_backend.py.
+* calibrate_run_full_anneal_banking.ino: executes larger virtual circuits through banking and supports constant, linear, and arbitrary p-kit annealing schedules through probana_compile_backend.py.
+
 ## Future
 
 * Controlled p-bit correlation through J
