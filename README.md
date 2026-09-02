@@ -9,7 +9,7 @@ Probana is a research analog/digital mixed-signal probabilistic p-bit computer. 
 * USB pluggable to any computer
 * provide firmware and PCB designs
 * potentially be modular, so that several 8-p-bit boards can be joined together to easily form an 8 × N probabilistic computer
-* Experiment with [p-kit language models](https://github.com/IBM/p-kit/wiki/p%E2%80%90kit-Language-Model-Project)
+* Experiment with [p-kit language models](https://github.com/IBM/p-kit/wiki/p%E2%80%90kit-Language-Model-Project) on Probana
   
 ## How it works or Why it should work?
 
