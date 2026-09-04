@@ -3,7 +3,7 @@ Probana is a research analog/digital mixed-signal probabilistic p-bit computer. 
 ## Objectives:
 
 * develop an open source probabilistic computer, initially with 8 physical p-bits
-  * support "banking" where N physical p-bits are used to emualate many p-bits   
+  * support "banking" where N physical p-bits are used to emulate many virtual p-bits at the cost of speed
 * explicitly design and expose it as a general-purpose p-kit circuit runner
   * therefore, a general-purpose probabilistic computer, not a specialized one
 * provide a full open source implementation using inexpensive, off-the-shelf components
