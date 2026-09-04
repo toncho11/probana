@@ -10,7 +10,9 @@ Probana is a research analog/digital mixed-signal probabilistic p-bit computer. 
 * provide firmware and PCB designs
 * potentially be modular, so that several 8-p-bit boards can be joined together to easily form an 8 × N probabilistic computer
 * Experiment with [p-kit language models](https://github.com/IBM/p-kit/wiki/p%E2%80%90kit-Language-Model-Project) on Probana
-  
+
+You can check the [advantages page](https://github.com/toncho11/probana/wiki#advantages-of-probana).
+
 ## How it works or Why it should work?
 
 The trick is to perform a calibration in the beginning. It is a software controlled correction applied in hardware. We measure the analog representation of each p-bit and we apply a software adjustment. Each p-bit implements a Bernoulli distribution. This distribution has a parameter, `p`, which defines the probability of the p-bit being `1`.
